@@ -87,6 +87,7 @@ const dataMusic = [
 
 const audio = new Audio();
 const tracksCard = document.getElementsByClassName('track');
+const catalogContainer = document.querySelector('.catalog__container');
 const player = document.querySelector('.player');
 const pauseBtn = document.querySelector('.player__controller-pause');
 const stopBtn = document.querySelector('.player__controller-stop');
@@ -125,6 +126,14 @@ stopBtn.addEventListener('click', () => {
     audio.src = '';
 })
 
+const renderCatalog = (dataList) => {
+    catalogContainer.textContent = '',
+    const listCards = dataList.map(() => {})
+    console.log('listCards: ', listCards);
+}
 
+const init = () => {
+    renderCatalog(dataMusic);
+};
 
 

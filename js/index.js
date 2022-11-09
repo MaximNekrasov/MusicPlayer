@@ -92,10 +92,36 @@ const player = document.querySelector('.player');
 const pauseBtn = document.querySelector('.player__controller-pause');
 const stopBtn = document.querySelector('.player__controller-stop');
 
+
+const pausePlayer = () => {
+  const trackActive = document.querySelector('.track_active')
+
+  if (audio.paused) {
+    audio.play();
+    pauseBtn.classList.remove('player__icon_play');
+    trackActive.classList.remove('track_pause');
+  } else {
+    audio.pause();
+    pauseBtn.classList.add('player__icon_play');
+    trackActive.classList.add('track_pause');
+  }
+}
+
 const playMusic = (event) => {
+    event.preventDefault();
+ 
     const trackActive = event.currentTarget;
 
-    audio.src = trackActive.dataset.track;
+    if (trackActive.classList.contains('track_active')) {
+      pausePlayer();
+      return
+    }
+
+    const id = trackActive.dataset.idTrack;
+
+    const track = dataMusic.find(item => id === item.id);
+
+    audio.src = track.mp3;
     audio.play();
     pauseBtn.classList.remove('player__icon_play');
     player.classList.add('player_active');
@@ -107,27 +133,17 @@ const playMusic = (event) => {
     trackActive.classList.add('track_active');
 };
 
-for (let i = 0; i < tracksCard.length; i++) {
+const addHandlerTrack = () => {
+  for (let i = 0; i < tracksCard.length; i++) {
     tracksCard[i].addEventListener('click', playMusic);
-};
+  }
+}
 
-pauseBtn.addEventListener('click', () => {
-    if (audio.paused) {
-        audio.play();
-        pauseBtn.classList.remove('player__icon_play');
-    } else {
-        audio.pause();
-        pauseBtn.classList.add('player__icon_play');
-    }
-});
-
-stopBtn.addEventListener('click', () => {
-    player.classList.remove('player_active');
-    audio.src = '';
-});
+pauseBtn.addEventListener('click', pausePlayer);
 
 const createCard = (data) => {
   const card = document.createElement('a');
+  card.href = '#';
   card.classList.add('catalog__item', 'track');
   card.dataset.idTrack = data.id;
 
@@ -148,11 +164,14 @@ const renderCatalog = (dataList) => {
     catalogContainer.textContent = '';
     const listCards = dataList.map(createCard);
     catalogContainer.append(...listCards);
+    addHandlerTrack();
 };
 
 
 const init = () => {
     renderCatalog(dataMusic);
 };
+
+init();
 
 

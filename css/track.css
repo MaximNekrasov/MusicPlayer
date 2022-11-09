@@ -70,6 +70,11 @@
     opacity: 1;
 }
 
+.track_pause .track__img-wrap::after {
+    transform: translate(-50%, -50%) rotateY(0);
+    background-image: url('../icons/play.svg');
+}
+
 .track_active:hover .track__img-wrap::after {
     background-color:#fff;
 }

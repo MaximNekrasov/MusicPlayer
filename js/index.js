@@ -105,7 +105,7 @@ const pausePlayer = () => {
     pauseBtn.classList.add('player__icon_play');
     trackActive.classList.add('track_pause');
   }
-}
+};
 
 const playMusic = (event) => {
     event.preventDefault();
@@ -137,9 +137,14 @@ const addHandlerTrack = () => {
   for (let i = 0; i < tracksCard.length; i++) {
     tracksCard[i].addEventListener('click', playMusic);
   }
-}
+};
 
 pauseBtn.addEventListener('click', pausePlayer);
+
+stopBtn.addEventListener('click', () => {
+  player.classList.remove('player_active');
+  audio.src = '';
+})
 
 const createCard = (data) => {
   const card = document.createElement('a');
@@ -167,9 +172,19 @@ const renderCatalog = (dataList) => {
     addHandlerTrack();
 };
 
+const checkCount = (i = 1) => {
+  tracksCard[0]
+  if(catalogContainer.clientHeight > tracksCard[0].clientHeight * 3) {
+    tracksCard[tracksCard.length - i].style.display = 'none';
+    checkCount(i + 1);
+  };
+  
+};
+
 
 const init = () => {
     renderCatalog(dataMusic);
+    checkCount();
 };
 
 init();

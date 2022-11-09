@@ -93,6 +93,15 @@ const pauseBtn = document.querySelector('.player__controller-pause');
 const stopBtn = document.querySelector('.player__controller-stop');
 
 
+const catalogAddBtn = document.createElement('button');
+catalogAddBtn.classList.add('catalog__btn-add')
+catalogAddBtn.innerHTML = `
+  <span>Увидеть все</span>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"/>  
+`;              
+
+
 const pausePlayer = () => {
   const trackActive = document.querySelector('.track_active')
 
@@ -177,14 +186,22 @@ const checkCount = (i = 1) => {
   if(catalogContainer.clientHeight > tracksCard[0].clientHeight * 3) {
     tracksCard[tracksCard.length - i].style.display = 'none';
     checkCount(i + 1);
-  };
-  
+  } else if(i !== 1) {
+      catalogContainer.append(catalogAddBtn);   
+  }
 };
 
 
 const init = () => {
     renderCatalog(dataMusic);
     checkCount();
+
+    catalogAddBtn.addEventListener('click', () => {
+      [...tracksCard].forEach((trackCard) => {
+        trackCard.style.display = '';
+        catalogAddBtn.remove();
+      });
+    });
 };
 
 init();

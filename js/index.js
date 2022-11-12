@@ -85,7 +85,12 @@ const dataMusic = [
     },
   ];
 
+const favoriteList = localStorage.getItem('favorite')
+  ? JSON.parse(localStorage.getItem('favorite'))
+  : [];
+
 const audio = new Audio();
+const favoriteBtn = document.querySelector('.header__favorite-btn')
 const tracksCard = document.getElementsByClassName('track');
 const catalogContainer = document.querySelector('.catalog__container');
 const player = document.querySelector('.player');
@@ -154,16 +159,21 @@ const playMusic = (event) => {
     nextBtn.dataset.idTrack = dataMusic[nextTrack].id;
 
     for (let i = 0; i < tracksCard.length; i++) {
+      if (id === tracksCard[i].dataset.idTrack) {
+        tracksCard[i].classList.add('track_active');
+      } else {
         tracksCard[i].classList.remove('track_active');
+      }        
     };
 
 
 
-    trackActive.classList.add('track_active');
+    
 };
 
 const addHandlerTrack = () => {
   for (let i = 0; i < tracksCard.length; i++) {
+
     tracksCard[i].addEventListener('click', playMusic);
   }
 };
@@ -173,6 +183,7 @@ pauseBtn.addEventListener('click', pausePlayer);
 stopBtn.addEventListener('click', () => {
   player.classList.remove('player_active');
   audio.src = '';
+  document.querySelector('.track_active').classList.remove('.track_active')
 })
 
 const createCard = (data) => {
@@ -242,7 +253,14 @@ const init = () => {
 
     prevBtn.addEventListener('click', playMusic);
     nextBtn.addEventListener('click', playMusic);
+
+    audio.addEventListener('ended', () => {
+      nextBtn.dispatchEvent(new Event('click', {bubbles: true}));
+    });
+
+
     audio.addEventListener('timeupdate', updateTime);
+
     playerProgressInput.addEventListener('change', () => {
       const progress = playerProgressInput.value;
       audio.currentTime = (progress / 1000) * audio.duration;

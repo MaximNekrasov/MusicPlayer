@@ -97,6 +97,9 @@ const likeBtn = document.querySelector('.player__controller-like');
 const muteBtn = document.querySelector('.player__controller-mute');
 const playerProgressInput = document.querySelector('.player__progress-input');
 
+const playerTimePassed = document.querySelector('.player__time-passed');
+const playerTimeTotal = document.querySelector('.player__time-total');
+
 
 const catalogAddBtn = document.createElement('button');
 catalogAddBtn.classList.add('catalog__btn-add')
@@ -209,6 +212,19 @@ const checkCount = (i = 1) => {
 };
 
 const updateTime = () => {
+  const duration = audio.duration;
+  const currentTime = audio.currentTime;
+  const progress = (currentTime / duration) * 1000;
+  playerProgressInput.value = progress ? progress : 0;
+
+  const minutesPassed = Math.floor(currentTime / 60) || '0';
+  const secondsPassed = Math.floor(currentTime % 60) || '0';
+
+  const minutesDuration = Math.floor(duration / 60) || '0';
+  const secondsDuration = Math.floor(duration % 60) || '0';
+
+  playerTimePassed.textContent = `${minutesPassed}:${secondsPassed < 10 ? '0' + secondsPassed : secondsPassed}`
+  playerTimeTotal.textContent = `${minutesDuration}:${secondsDuration < 10 ? '0' + secondsDuration : secondsDuration}`
 
 }
 
@@ -229,7 +245,7 @@ const init = () => {
     audio.addEventListener('timeupdate', updateTime);
     playerProgressInput.addEventListener('change', () => {
       const progress = playerProgressInput.value;
-      audio.currentTime = (progress / 100) * audio.duration;
+      audio.currentTime = (progress / 1000) * audio.duration;
     })
 };
 

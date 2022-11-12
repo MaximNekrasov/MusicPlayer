@@ -91,6 +91,9 @@ const catalogContainer = document.querySelector('.catalog__container');
 const player = document.querySelector('.player');
 const pauseBtn = document.querySelector('.player__controller-pause');
 const stopBtn = document.querySelector('.player__controller-stop');
+const prevBtn = document.querySelector('.player__controller-prev');
+const nextBtn = document.querySelector('.player__controller-next');
+const likeBtn = document.querySelector('.player__controller-like');
 
 
 const catalogAddBtn = document.createElement('button');

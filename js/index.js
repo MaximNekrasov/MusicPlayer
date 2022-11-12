@@ -94,6 +94,8 @@ const stopBtn = document.querySelector('.player__controller-stop');
 const prevBtn = document.querySelector('.player__controller-prev');
 const nextBtn = document.querySelector('.player__controller-next');
 const likeBtn = document.querySelector('.player__controller-like');
+const muteBtn = document.querySelector('.player__controller-mute');
+const playerProgressInput = document.querySelector('.player__progress-input');
 
 
 const catalogAddBtn = document.createElement('button');
@@ -128,19 +130,31 @@ const playMusic = (event) => {
       pausePlayer();
       return
     }
-
+    
+    let i = 0;
     const id = trackActive.dataset.idTrack;
 
-    const track = dataMusic.find(item => id === item.id);
+    const track = dataMusic.find((item, index) => {
+      i = index;
+      return id === item.id;
+    });
 
     audio.src = track.mp3;
+
     audio.play();
     pauseBtn.classList.remove('player__icon_play');
     player.classList.add('player_active');
 
+    const prevTrack = i === 0 ? dataMusic.length - 1 : i - 1;
+    const nextTrack = i + 1 === dataMusic.length ? 0 : i + 1;
+    prevBtn.dataset.idTrack = dataMusic[prevTrack].id;
+    nextBtn.dataset.idTrack = dataMusic[nextTrack].id;
+
     for (let i = 0; i < tracksCard.length; i++) {
         tracksCard[i].classList.remove('track_active');
     };
+
+
 
     trackActive.classList.add('track_active');
 };
@@ -194,6 +208,10 @@ const checkCount = (i = 1) => {
   }
 };
 
+const updateTime = () => {
+
+}
+
 
 const init = () => {
     renderCatalog(dataMusic);
@@ -205,6 +223,14 @@ const init = () => {
         catalogAddBtn.remove();
       });
     });
+
+    prevBtn.addEventListener('click', playMusic);
+    nextBtn.addEventListener('click', playMusic);
+    audio.addEventListener('timeupdate', updateTime);
+    playerProgressInput.addEventListener('change', () => {
+      const progress = playerProgressInput.value;
+      audio.currentTime = (progress / 100) * audio.duration;
+    })
 };
 
 init();

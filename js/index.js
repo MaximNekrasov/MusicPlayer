@@ -265,6 +265,14 @@ const init = () => {
       const progress = playerProgressInput.value;
       audio.currentTime = (progress / 1000) * audio.duration;
     })
+
+    favoriteBtn.addEventListener('click', () => {
+
+    });
+
+    likeBtn.addEventListener('click', () => {
+
+    });
 };
 
 init();

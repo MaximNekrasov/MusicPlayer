@@ -85,12 +85,15 @@ const dataMusic = [
     },
   ];
 
+let playList = [];
+
 const favoriteList = localStorage.getItem('favorite')
   ? JSON.parse(localStorage.getItem('favorite'))
   : [];
 
 const audio = new Audio();
-const favoriteBtn = document.querySelector('.header__favorite-btn')
+const favoriteBtn = document.querySelector('.header__favorite-btn');
+const headerLogo = document.querySelector('.header__logo');
 const tracksCard = document.getElementsByClassName('track');
 const catalogContainer = document.querySelector('.catalog__container');
 const player = document.querySelector('.player');
@@ -149,7 +152,7 @@ const playMusic = (event) => {
       likeBtn.classList.remove('player__icon_like_active')
     };
 
-    const track = dataMusic.find((item, index) => {
+    const track = playList.find((item, index) => {
       i = index;
       return id === item.id;
     });
@@ -160,10 +163,10 @@ const playMusic = (event) => {
     pauseBtn.classList.remove('player__icon_play');
     player.classList.add('player_active');
 
-    const prevTrack = i === 0 ? dataMusic.length - 1 : i - 1;
-    const nextTrack = i + 1 === dataMusic.length ? 0 : i + 1;
-    prevBtn.dataset.idTrack = dataMusic[prevTrack].id;
-    nextBtn.dataset.idTrack = dataMusic[nextTrack].id;
+    const prevTrack = i === 0 ? playList.length - 1 : i - 1;
+    const nextTrack = i + 1 === playList.length ? 0 : i + 1;
+    prevBtn.dataset.idTrack = playList[prevTrack].id;
+    nextBtn.dataset.idTrack = playList[nextTrack].id;
     likeBtn.dataset.idTrack = id;
 
     for (let i = 0; i < tracksCard.length; i++) {
@@ -173,9 +176,6 @@ const playMusic = (event) => {
         tracksCard[i].classList.remove('track_active');
       }        
     };
-
-
-
     
 };
 
@@ -191,7 +191,7 @@ pauseBtn.addEventListener('click', pausePlayer);
 stopBtn.addEventListener('click', () => {
   player.classList.remove('player_active');
   audio.src = '';
-  document.querySelector('.track_active').classList.remove('.track_active')
+  document.querySelector('.track_active').classList.remove('track_active')
 })
 
 const createCard = (data) => {
@@ -214,6 +214,7 @@ const createCard = (data) => {
 };
 
 const renderCatalog = (dataList) => {
+    playList = [...dataList];
     catalogContainer.textContent = '';
     const listCards = dataList.map(createCard);
     catalogContainer.append(...listCards);
@@ -275,8 +276,17 @@ const init = () => {
     })
 
     favoriteBtn.addEventListener('click', () => {
-
+      const data = dataMusic.filter((item) => favoriteList.includes(item.id));
+      renderCatalog(data);
+      checkCount();
+  
     });
+
+    headerLogo.addEventListener('click', () => {
+      renderCatalog(dataMusic);
+      checkCount();  
+    });
+
 
     likeBtn.addEventListener('click', () => {
       const index = favoriteList.indexOf(likeBtn.dataset.idTrack)

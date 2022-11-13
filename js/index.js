@@ -142,6 +142,13 @@ const playMusic = (event) => {
     let i = 0;
     const id = trackActive.dataset.idTrack;
 
+    const index = favoriteList.indexOf(id)
+    if (index !== -1) {
+      likeBtn.classList.add('player__icon_like_active')
+    } else {
+      likeBtn.classList.remove('player__icon_like_active')
+    };
+
     const track = dataMusic.find((item, index) => {
       i = index;
       return id === item.id;
@@ -157,6 +164,7 @@ const playMusic = (event) => {
     const nextTrack = i + 1 === dataMusic.length ? 0 : i + 1;
     prevBtn.dataset.idTrack = dataMusic[prevTrack].id;
     nextBtn.dataset.idTrack = dataMusic[nextTrack].id;
+    likeBtn.dataset.idTrack = id;
 
     for (let i = 0; i < tracksCard.length; i++) {
       if (id === tracksCard[i].dataset.idTrack) {
@@ -271,7 +279,16 @@ const init = () => {
     });
 
     likeBtn.addEventListener('click', () => {
+      const index = favoriteList.indexOf(likeBtn.dataset.idTrack)
+      if (index === -1) {
+        favoriteList.push(likeBtn.dataset.idTrack);
+        likeBtn.classList.add('player__icon_like_active')
+      } else {
+        favoriteList.splice(index, 1);
+        likeBtn.classList.remove('player__icon_like_active')
+      }
 
+      localStorage.setItem('favorite', JSON.stringify(favoriteList));
     });
 };
 

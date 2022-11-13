@@ -13,6 +13,8 @@ const headerLogo = document.querySelector('.header__logo');
 const tracksCard = document.getElementsByClassName('track');
 const catalogContainer = document.querySelector('.catalog__container');
 const player = document.querySelector('.player');
+const trackInfoTitle = document.querySelector('.track-info__title');
+const trackInfoArtist = document.querySelector('.track-info__artist');
 const pauseBtn = document.querySelector('.player__controller-pause');
 const stopBtn = document.querySelector('.player__controller-stop');
 const prevBtn = document.querySelector('.player__controller-prev');
@@ -76,6 +78,8 @@ const playMusic = (event) => {
     });
 
     audio.src = `${API_URL}${track.mp3}`;
+    trackInfoTitle.textContent = track.track;
+    trackInfoArtist.textContent = track.artist;
 
     audio.play();
     pauseBtn.classList.remove('player__icon_play');

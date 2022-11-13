@@ -118,12 +118,12 @@
 
 .player__progress-input:hover::-webkit-slider-runnable-track,
 .player__progress-input:focus::-webkit-slider-runnable-track {
-    background-color: #131312;
+    background-color: #92a87a;
 }
 
 .player__progress-input:hover::-webkit-slider-thumb,
 .player__progress-input:focus::-webkit-slider-thumb {
-    background-color: #80c019;
+    background-color: #cedaa3;
     border-color: black;
 }
 
